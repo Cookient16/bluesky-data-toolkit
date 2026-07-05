@@ -1,8 +1,8 @@
-# Bluesky Data Toolkit — APIs, code examples & ready-made tools
+# Bluesky Data Toolkit
 
-Everything you need to pull **public data out of Bluesky** (27M+ MAU, fully open AT Protocol): raw API examples, working code, and hosted tools for mentions monitoring, profile analytics, and follower exports. No login or API key required for any of it.
+Raw API examples, working code, and hosted tools for pulling public data out of Bluesky: mentions monitoring, profile analytics, follower exports. Bluesky's AT Protocol is open, so none of this needs a login or API key.
 
-> 📈 **[Bluesky This Week](./reports/)** — auto-generated weekly snapshot of trending topics and mention volumes, produced with the tools below.
+> 📈 **[Bluesky This Week](./reports/)**: a weekly snapshot of trending topics and mention volumes, generated with the tools below.
 
 ## The 60-second API tour
 
@@ -26,9 +26,9 @@ curl "https://api.bsky.app/xrpc/app.bsky.graph.getFollowers?actor=bsky.app&limit
 curl "https://api.bsky.app/xrpc/app.bsky.unspecced.getTrendingTopics?limit=10"
 ```
 
-⚠️ Note: `public.api.bsky.app` returns **403 for search** since mid-2026 — use `api.bsky.app`.
+⚠️ Note: `public.api.bsky.app` returns **403 for search** since mid-2026. Use `api.bsky.app`.
 
-⚠️ **Search pagination gotcha (new since July 2026):** unauthenticated `searchPosts` returns **403 on any `cursor` request** — only the first page works. To paginate, walk backwards in time instead: use `sort=latest` and set `until` to the `createdAt` of the last post from the previous page. (Cursor pagination on `getFollowers`/`getFollows` still works fine.)
+⚠️ **Search pagination gotcha (new since July 2026):** unauthenticated `searchPosts` returns **403 on any `cursor` request**. Only the first page works, and the error looks like rate limiting when it isn't. To paginate, walk backwards in time instead: use `sort=latest` and set `until` to the `createdAt` of the last post from the previous page, then dedupe on `uri`. Cursor pagination on `getFollowers`/`getFollows` still works fine.
 
 ```bash
 # page 2, cursor-free:
@@ -59,6 +59,6 @@ All three also work as **MCP tools** inside Claude, Cursor, and other AI agents 
 
 **Is this allowed?** These endpoints serve public data and the AT Protocol is open by design. Respect rate limits and applicable laws when using the data.
 
-**Do I need a Bluesky account?** No — all endpoints above are unauthenticated.
+**Do I need a Bluesky account?** No. All endpoints above are unauthenticated.
 
 **How fresh is search?** Posts appear in search within seconds; `sort=latest` returns newest first.
