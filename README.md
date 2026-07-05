@@ -28,6 +28,13 @@ curl "https://api.bsky.app/xrpc/app.bsky.unspecced.getTrendingTopics?limit=10"
 
 ⚠️ Note: `public.api.bsky.app` returns **403 for search** since mid-2026 — use `api.bsky.app`.
 
+⚠️ **Search pagination gotcha (new since July 2026):** unauthenticated `searchPosts` returns **403 on any `cursor` request** — only the first page works. To paginate, walk backwards in time instead: use `sort=latest` and set `until` to the `createdAt` of the last post from the previous page. (Cursor pagination on `getFollowers`/`getFollows` still works fine.)
+
+```bash
+# page 2, cursor-free:
+curl "https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=YOUR_BRAND&sort=latest&limit=100&until=2026-07-04T20:12:40.000Z"
+```
+
 ## Node.js example: brand mentions with engagement
 
 ```js
